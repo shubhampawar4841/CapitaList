@@ -6,6 +6,7 @@ import { StatCard } from "@/components/cards/stat-card"
 import { CategoryPieChart } from "@/components/charts/pie-chart"
 import { MonthlyBarChart } from "@/components/charts/bar-chart"
 import { ExpenseLineChart } from "@/components/charts/line-chart"
+import { ExpenseCategoryChart } from "@/components/charts/expense-category-chart"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Wallet, TrendingUp, TrendingDown, Target, Sparkles } from "lucide-react"
@@ -221,6 +222,23 @@ export default function DashboardPage() {
             </Card>
           )}
         </div>
+
+        {/* Expense by Category - Horizontal Bar Chart */}
+        {categoryExpenses.length > 0 ? (
+          <ExpenseCategoryChart
+            data={categoryExpenses}
+            title="Where Your Money Goes - Top Expense Categories"
+          />
+        ) : (
+          <Card className="glass">
+            <CardHeader>
+              <CardTitle>Where Your Money Goes - Top Expense Categories</CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center h-64">
+              <p className="text-muted-foreground">No expense data available</p>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Expense Trend */}
         {expenseTrend.length > 0 ? (

@@ -49,3 +49,4 @@ export function MonthlyBarChart({ data, title }: BarChartProps) {
 
 
 
+

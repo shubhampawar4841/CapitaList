@@ -50,3 +50,4 @@ export function ExpenseLineChart({ data, title }: LineChartProps) {
 
 
 
+
