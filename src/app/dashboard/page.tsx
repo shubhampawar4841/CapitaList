@@ -81,6 +81,31 @@ export default function DashboardPage() {
     color: cat.color || ["#8B5CF6", "#A855F7", "#C084FC", "#D8B4FE", "#E9D5FF", "#F3E8FF"][index % 6],
   }))
 
+  // Aggregate expenses by description name
+  const expenseByDescription = transactions
+    .filter((t: any) => t.type === "expense")
+    .reduce((acc: any, transaction: any) => {
+      const description = transaction.description || transaction.category_name || "Uncategorized"
+      if (!acc[description]) {
+        acc[description] = 0
+      }
+      acc[description] += Number(transaction.amount) || 0
+      return acc
+    }, {})
+
+  const totalExpenseAmount = Object.values(expenseByDescription).reduce(
+    (sum: number, amount: any) => sum + Number(amount),
+    0
+  ) as number
+
+  const descriptionExpenses = Object.entries(expenseByDescription)
+    .map(([description, amount]: [string, any]) => ({
+      name: description,
+      amount: Number(amount),
+      percentage: totalExpenseAmount > 0 ? ((Number(amount) / totalExpenseAmount) * 100).toFixed(1) : 0,
+    }))
+    .sort((a, b) => b.amount - a.amount)
+
   const getAIInsights = async () => {
     if (!user) return
     try {
@@ -223,16 +248,16 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Expense by Category - Horizontal Bar Chart */}
-        {categoryExpenses.length > 0 ? (
+        {/* Expense by Description - Horizontal Bar Chart */}
+        {descriptionExpenses.length > 0 ? (
           <ExpenseCategoryChart
-            data={categoryExpenses}
-            title="Where Your Money Goes - Top Expense Categories"
+            data={descriptionExpenses}
+            title="Where Your Money Goes - Top Expense Descriptions"
           />
         ) : (
           <Card className="glass">
             <CardHeader>
-              <CardTitle>Where Your Money Goes - Top Expense Categories</CardTitle>
+              <CardTitle>Where Your Money Goes - Top Expense Descriptions</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center justify-center h-64">
               <p className="text-muted-foreground">No expense data available</p>

@@ -4,7 +4,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface ExpenseCategoryData {
-  category: string
+  category?: string
+  description?: string
+  name: string
   amount: number
   percentage: string | number
 }
@@ -51,7 +53,7 @@ export function ExpenseCategoryChart({ data, title = "Expense by Category" }: Ex
         const data = payloadItem.payload as ExpenseCategoryData & { percentage: number }
         return (
           <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-lg">
-            <p className="font-semibold text-white">{data.category}</p>
+            <p className="font-semibold text-white">{data.name}</p>
             <p className="text-sm text-slate-300">
               ₹{data.amount.toLocaleString()} ({data.percentage.toFixed(1)}%)
             </p>
@@ -67,7 +69,7 @@ export function ExpenseCategoryChart({ data, title = "Expense by Category" }: Ex
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <p className="text-sm text-muted-foreground mt-1">
-          Showing top {sortedData.length} categories • Total: ₹{totalExpense.toLocaleString()}
+          Showing top {sortedData.length} transactions • Total: ₹{totalExpense.toLocaleString()}
         </p>
       </CardHeader>
       <CardContent>
@@ -85,10 +87,10 @@ export function ExpenseCategoryChart({ data, title = "Expense by Category" }: Ex
             />
             <YAxis 
               type="category" 
-              dataKey="category" 
+              dataKey="name" 
               stroke="#94A3B8"
-              width={90}
-              tick={{ fontSize: 12 }}
+              width={120}
+              tick={{ fontSize: 11 }}
             />
             <Tooltip content={<CustomTooltip />} />
             <Bar dataKey="amount" radius={[0, 8, 8, 0]}>
@@ -100,12 +102,12 @@ export function ExpenseCategoryChart({ data, title = "Expense by Category" }: Ex
         </ResponsiveContainer>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2 text-xs">
           {sortedData.slice(0, 5).map((item, index) => (
-            <div key={item.category} className="flex items-center gap-2">
+            <div key={item.name} className="flex items-center gap-2">
               <div 
                 className="h-3 w-3 rounded" 
                 style={{ backgroundColor: item.color }}
               />
-              <span className="text-muted-foreground truncate">{item.category}</span>
+              <span className="text-muted-foreground truncate" title={item.name}>{item.name}</span>
             </div>
           ))}
         </div>
