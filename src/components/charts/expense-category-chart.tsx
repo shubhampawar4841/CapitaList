@@ -16,7 +16,8 @@ interface ExpenseCategoryChartProps {
   title?: string
 }
 
-const COLORS = ["#EF4444", "#F97316", "#F59E0B", "#EAB308", "#84CC16", "#22C55E", "#10B981", "#14B8A6", "#06B6D4", "#3B82F6"]
+// Use the app's purple theme colors (matching pie chart and overall theme)
+const COLORS = ["#8B5CF6", "#A855F7", "#C084FC", "#D8B4FE", "#E9D5FF", "#F3E8FF", "#8B5CF6", "#A855F7", "#C084FC", "#D8B4FE"]
 
 export function ExpenseCategoryChart({ data, title = "Expense by Category" }: ExpenseCategoryChartProps) {
   // Sort data by amount (highest to lowest) and limit to top 10
@@ -52,9 +53,16 @@ export function ExpenseCategoryChart({ data, title = "Expense by Category" }: Ex
       if (payloadItem && payloadItem.payload) {
         const data = payloadItem.payload as ExpenseCategoryData & { percentage: number }
         return (
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-lg">
-            <p className="font-semibold text-white">{data.name}</p>
-            <p className="text-sm text-slate-300">
+          <div 
+            style={{
+              backgroundColor: "#0F172A",
+              border: "1px solid #1E293B",
+              borderRadius: "8px",
+              padding: "12px",
+            }}
+          >
+            <p className="font-semibold" style={{ color: "#E5E7EB" }}>{data.name}</p>
+            <p className="text-sm" style={{ color: "#94A3B8" }}>
               ₹{data.amount.toLocaleString()} ({data.percentage.toFixed(1)}%)
             </p>
           </div>
